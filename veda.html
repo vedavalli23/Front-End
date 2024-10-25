@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masters</title>
+  <style>
+    .speaker-modal__content-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+    }
+
+    .speaker-modal__image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 20px;
+    }
+
+    .speaker-modal__text {
+      flex: 1;
+      text-align: justify;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: lightblue;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #f4f4f4;
+      padding: 1rem;
+      border-right: 2px solid #ccc;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar__title {
+      font-size: 20px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .speaker-slider__wrapper {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .speaker-card {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      width: 100%;
+      margin: 0.5rem 0;
+      text-align: center;
+    }
+
+    .speaker-card__image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .speaker-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .speaker-modal__content {
+      background-color: lightgreen;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .speaker-modal__close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .speaker-modal__close:hover,
+    .speaker-modal__close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <center>
+    <h1><i>The Pinnacle of Sports</i></h1>
+  </center>
+
+  <div class="container">
+    <aside class="sidebar">
+      <h2 class="sidebar__title">Champions</h2>
+      <div class="speaker-slider__wrapper">
+        <article class="speaker-card" id="speaker1" tabindex="0">
+          <img src="Doni.jpg" alt="M.S. Dhoni" class="speaker-card__image">
+          <h3 class="speaker-card__name">M.S. Dhoni</h3>
+          <button class="speaker-card__button" aria-label="M.S. Dhoni" data-popover="#popover1">
+            Cricketer
+          </button>
+        </article>
+
+        <article class="speaker-card" id="speaker2" tabindex="0">
+          <img src="vis.jpg" alt="Viswanathan Anand" class="speaker-card__image">
+          <h3 class="speaker-card__name">Viswanathan Anand</h3>
+          <button class="speaker-card__button" aria-label="Viswanathan Anand" data-popover="#popover2">
+            Chess Player
+          </button>
+        </article>
+
+        <article class="speaker-card" id="speaker3" tabindex="0">
+          <img src="bolt.jpg" alt="Usain Bolt" class="speaker-card__image">
+          <h3 class="speaker-card__name">Usain Bolt</h3>
+          <button class="speaker-card__button" aria-label="Usain Bolt" data-popover="#popover3">
+            Athlete
+          </button>
+        </article>
+      </div>
+    </aside>
+
+    <div class="speaker-modal" id="speakerModal">
+      <div class="speaker-modal__content">
+        <span class="speaker-modal__close">&times;</span>
+        <div class="speaker-modal__body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const speakerCards = document.querySelectorAll('.speaker-card__button');
+      const modal = document.getElementById('speakerModal');
+      const modalBody = document.querySelector('.speaker-modal__body');
+      const closeModal = document.querySelector('.speaker-modal__close');
+
+      speakerCards.forEach((button) => {
+        button.addEventListener('click', () => {
+          const speakerCard = button.closest('.speaker-card');
+          const speakerName = speakerCard.querySelector('.speaker-card__name').textContent.trim();
+          const { bio, imageSrc } = getSpeakerDetails(speakerName);
+
+          modalBody.innerHTML = `
+            <div class="speaker-modal__content-wrapper">
+              <img src="${imageSrc}" alt="${speakerName}" class="speaker-modal__image">
+              <div class="speaker-modal__text">
+                <h3>${speakerName}</h3>
+                <p>${bio}</p>
+              </div>
+            </div>
+          `;
+          modal.style.display = 'block';
+        });
+      });
+
+      closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+
+      function getSpeakerDetails(name) {
+        switch (name) {
+          case 'M.S. Dhoni':
+            return {
+              bio: 'Mahendra Singh Dhoni is an Indian professional cricketer who plays as a right-handed batter and a wicket-keeper. He is widely regarded as one of the most prolific wicket-keeper batsmen and captains.',
+              imageSrc: 'Doni.jpg'
+            };
+          case 'Viswanathan Anand':
+            return {
+              bio: 'Viswanathan "Vishy" Anand is an Indian chess grandmaster and a former five-time World Chess Champion. He was the first grandmaster from India in 1988 and has the eighth-highest peak FIDE rating of all time.',
+              imageSrc: 'vis.jpg'
+            };
+          case 'Usain Bolt':
+            return {
+              bio: 'Usain Bolt is a Jamaican retired sprinter who is widely considered to be the greatest sprinter of all time. He is an eight-time Olympic gold medalist and the world record holder in the 100 meters, 200 meters, and 4 × 100 meters relay.',
+              imageSrc: 'bolt.jpg'
+            };
+          default:
+            return {
+              bio: 'Biography not available.',
+              imageSrc: 'default.jpg'
+            };
+        }
+      }
+    });
+  </script>
+</body>
+</html>
